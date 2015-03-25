@@ -12,10 +12,11 @@ function generateNewsletter() {
             "date_to": "2011-02-17T17:00:00+01:00",
             "date_from_status": "known"
         }
-    }).done(function (data) {
+    }).done(function(data) {
         createNewsletterFromEvents(data._embedded.event_occurrences);
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        alert("Faild to read events.\n" + textStatus);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        errorMessage("Failed to read events (" + textStatus + ")");
+        console.error(errorThrown);
     });
 }
 
@@ -34,7 +35,18 @@ function createNewsletterFromEvents(events) {
         },
         "content": mailContent
     };
-    console.log(requestData);
+
+    $.ajax({
+        url: CONFIG.MAILCHIMP_CREATE_CAMPAIGN_ENDPOINT,
+        dataType: "json",
+        data : requestData
+    }).done(function(data) {
+        successMessage("Campaign was created successfully.");
+        console.log(data);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        errorMessage("Failed to create campaign (" + textStatus + ")");
+        console.error(errorThrown);
+    });
 }
 
 function createMailContent(events) {
@@ -58,6 +70,14 @@ function createMailContent(events) {
     var mailContent = {};
     mailContent.sections = sections;
     return mailContent;
+}
+
+function errorMessage(message) {
+    $("<div/>").text(message).appendTo($("#errorMessage"));
+}
+
+function successMessage(message) {
+    $("<div/>").text(message).appendTo($("#successMessage"));
 }
 
 function getParameterByName(name) {
