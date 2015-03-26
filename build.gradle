@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
+
+sourceCompatibility = 1.7
+version = '1.0'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'com.google.http-client:google-http-client-appengine:1.20.0'
+    compile 'org.json:json:20140107'
+    compile 'joda-time:joda-time:2.7'
+
+    runtime 'com.google.appengine:appengine-api-1.0-sdk:1.9.18'
+}

@@ -1,3 +1,6 @@
 *.iml
 /.idea
-src/config.js
+/.gradle
+/out
+/build
+src/main/resources/newsletter.properties
