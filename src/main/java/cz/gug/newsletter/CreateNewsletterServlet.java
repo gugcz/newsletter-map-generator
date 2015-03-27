@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -76,7 +77,8 @@ public class CreateNewsletterServlet extends HttpServlet {
 
 	private String createSubject(int year, int month) {
 		DateTime dateTime = new DateTime(year, month, 1, 0, 0);
-		return DateTimeFormat.forPattern("MMMM YYYY").print(dateTime).toUpperCase();
+		return DateTimeFormat.forPattern("MMMM YYYY").withLocale(Locale.forLanguageTag("cs"))
+				.print(dateTime).toUpperCase();
 	}
 
 	private JSONObject createMailContent(List<Event> events, int year, int month) {
