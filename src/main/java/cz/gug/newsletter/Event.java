@@ -27,9 +27,9 @@ public class Event {
 		}
 
 		if (JsonUtils.isNullOrEmpty(jsonObject, "newsletter_button_label")){
-			newsletterButtonLabel = "Registrace";
+			newsletterButtonLabel = "VÍCE O AKCI";
 		} else {
-			newsletterButtonLabel = jsonObject.getString("newsletter_button_label");
+			newsletterButtonLabel = jsonObject.getString("newsletter_button_label").toUpperCase();
 		}
 
 		String rawFromDate = jsonObject.getString("date_from");

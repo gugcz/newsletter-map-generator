@@ -16,6 +16,9 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -36,8 +39,11 @@ public class CreateNewsletterServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Event> events = readEvents();
-		JSONObject requestData = createMailchimpRequestData(events);
+		int year = Integer.parseInt(request.getParameter("year"));
+		int month = Integer.parseInt(request.getParameter("month"));
+
+		List<Event> events = readEvents(year, month);
+		JSONObject requestData = createMailchimpRequestData(events, year, month);
 		String campaignUrl = createMailchimpCampaign(requestData);
 		response.getWriter().print("<a href = \"" + campaignUrl + "\">" + campaignUrl + "</a>");
 	}
@@ -51,7 +57,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		return jsonObject.getString("archive_url");
 	}
 
-	private JSONObject createMailchimpRequestData(List<Event> events) {
+	private JSONObject createMailchimpRequestData(List<Event> events, int year, int month) {
 		JSONObject requestData = new JSONObject();
 		requestData.put("apikey", configuration.getProperty("mailchimp.api.key"));
 		requestData.put("type", "regular");
@@ -61,16 +67,21 @@ public class CreateNewsletterServlet extends HttpServlet {
 		options.put("template_id", configuration.getProperty("template.id"));
 		options.put("from_email", configuration.getProperty("from.email"));
 		options.put("from_name", configuration.getProperty("from.name"));
-		options.put("subject", "Duben 2015");
+		options.put("subject", createSubject(year, month));
 		requestData.put("options", options);
 
-		requestData.put("content", createMailContent(events));
+		requestData.put("content", createMailContent(events, year, month));
 		return requestData;
 	}
 
-	private JSONObject createMailContent(List<Event> events) {
+	private String createSubject(int year, int month) {
+		DateTime dateTime = new DateTime(year, month, 1, 0, 0);
+		return DateTimeFormat.forPattern("MMMM YYYY").print(dateTime).toUpperCase();
+	}
+
+	private JSONObject createMailContent(List<Event> events, int year, int month) {
 		JSONObject sections = new JSONObject();
-		sections.put("header", "Duben 2015");
+		sections.put("header", createSubject(year, month));
 		int gdgIndex = 0;
 		int gbgIndex = 0;
 		int gegIndex = 0;
@@ -113,11 +124,14 @@ public class CreateNewsletterServlet extends HttpServlet {
 		return mailContent;
 	}
 
-	private List<Event> readEvents() throws IOException {
+	private List<Event> readEvents(int year, int month) throws IOException {
+		DateTime dateFrom = new DateTime(year, month, 1, 1, 0, 0);
+		DateTime dateTo = new DateTime(year, month + 1, 1, 0, 0);
+
 		GenericUrl url = new GenericUrl(configuration.getProperty("gug.web.endpoint"));
 		url.put("Token", configuration.getProperty("gug.web.api.key"));
-		url.put("date_from_after", "2015-04-01T00:00:00+01:00");
-		url.put("date_from_before", "2015-05-01T00:00:00+01:00");
+		url.put("date_from_after", ISODateTimeFormat.dateTime().print(dateFrom));
+		url.put("date_from_before", ISODateTimeFormat.dateTime().print(dateTo));
 		url.put("date_from_status", "known");
 		HttpRequest eventsRequest = requestFactory.buildGetRequest(url);
 		InputStream eventsInputStream = eventsRequest.execute().getContent();

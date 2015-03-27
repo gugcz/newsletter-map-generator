@@ -7,21 +7,29 @@
 <h2>Automatické generování GUG newsletteru</h2>
 <form action="createNewsletter" method="post">
     <select name="month">
-        <option name="1">Leden</option>
-        <option name="2">Únor</option>
-        <option name="3">Březen</option>
-        <option name="4">Duben</option>
-        <option name="5">Květen</option>
-        <option name="6">Červen</option>
-        <option name="7">Červenec</option>
-        <option name="8">Srpen</option>
-        <option name="9">Září</option>
-        <option name="10">Říjen</option>
-        <option name="11">Listopad</option>
-        <option name="12">Prosinec</option>
+        <option value="1">Leden</option>
+        <option value="2">Únor</option>
+        <option value="3">Březen</option>
+        <option value="4">Duben</option>
+        <option value="5">Květen</option>
+        <option value="6">Červen</option>
+        <option value="7">Červenec</option>
+        <option value="8">Srpen</option>
+        <option value="9">Září</option>
+        <option value="10">Říjen</option>
+        <option value="11">Listopad</option>
+        <option value="12">Prosinec</option>
     </select>
     <select name="year">
-        <option name="2015">2015</option>
+        <option value="2010">2010</option>
+        <option value="2011">2011</option>
+        <option value="2012">2012</option>
+        <option value="2013">2013</option>
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
     </select>
     <input type="submit" value="Vytvoř newsletter">
 
