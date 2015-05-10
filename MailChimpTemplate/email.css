@@ -84,6 +84,11 @@ hr {
   border: none;
 }
 
+.hr {
+  width: 400px;
+  margin: 0 auto;
+}
+
 
 
 /* ------------------------------------- 
@@ -115,78 +120,21 @@ table.body-wrap .events_summary .cities {
 }
 
 .gdg_color {
-    background-color: #469BF3;
+    color: #469BF3;
 }
 
 .gbg_color {
-    background-color: #27B945;
+    color: #27B945;
 }
 
 .geg_color {
-    background-color: #FCD120;
+    color: #FCD120;
 }
 
 .gxg_color {
-    background-color: #E3624A;
+    color: #E3624A;
 }
 
-/* TODO redundant code?  */
-.events_summary_table {
-    padding: 0 0 5px 0;
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.events_summary_table .chapter_label {
-    padding: 0;
-    vertical-align: top;
-    width: 45px;
-}
-
-.events_summary_table .chapter_label table{
-    border-collapse: collapse;
-}
-
-.events_summary_table .chapter_label table tr td {
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding: 2px 7px !important;
-    color: #ffffff;
-    font-size: 13px;
-}
-
-.events_summary_table .event_name {
-    vertical-align: top;
-    padding: 0 0 0 10px;
-}
-
-table.summary_event {
-  padding: 0 0 5px 0
-}
-
-table.summary_event td.chapter {
-  padding: 0;
-  vertical-align: top;
-  width: 45px;
-}
-
-table.summary_event td.chapter .mark {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  padding:2px 7px;
-}
-
-table.summary_event td.chapter .mark span {
-  color: #ffffff;
-  font-size: 13px;
-}
-
-table.summary_event td.event_name {
-  vertical-align: top;
-  padding: 0 0 0 10px;
-}
 
 /* ------------------------------------- 
 		FOOTER 
@@ -274,14 +222,14 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 
 /* This should also be a block element, so that it will fill 100% of the .container */
 .content {
-	padding:15px;
+	padding:15px 0;
 	max-width:600px;
 	margin:0 auto;
 	display:block; 
 }
 
 /* Let's make sure tables in the content area are 100% wide */
-.content table { width: 100%; }
+.content table { width: 100%; border-spacing: 0;}
 
 
 /* Odds and ends */
@@ -302,22 +250,64 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 	float:left;
 }
 
-.events_list .column {
-  width: 277px;
-	min-width: 276px;
+.column.c1, .column.c3 {
 	float:left;
-  margin-right: 3px
+  width: 50px;
+	min-width: 50px;
 }
-.events_list .column.right {
-  width: 277px;
-	min-width: 276px;
+
+.column.c2 {
 	float:left;
-  margin-left: 3px
+  width: 480px;
+	min-width: 480px;
+}
+
+.events_summary h4 {
+  padding: 1em 0 1em 0;
+  font-size: 18px;
+}
+
+.events_summary img {
+  padding-right: 10px;
+}
+
+.events_summary .chapter {
+  width: 50px;
+  vertical-align: top;
+  text-align: right;
+}
+
+.events_summary .chapter_mark {
+  font-weight: bold;
+}
+
+.events_summary a {
+  text-decoration: none;
+}
+
+.events_summary .place {
+  color: #7B868B;
+  font-size: 15px;
+  line-height: 25px;
+  height: 25px;
+}
+
+.delimiter hr {
+  height: 15px;
+}
+
+.history h3 {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.history p {
+  color: #7B868B;
+  text-align: justify;
 }
 
 /* Be sure to place a .clear element after each set of columns, just to be safe */
 .clear { display: block; clear: both; }
-
 
 /* ------------------------------------------- 
 		PHONE
