@@ -3,8 +3,10 @@ package cz.gug.newsletter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -84,46 +86,52 @@ public class CreateNewsletterServlet extends HttpServlet {
 	private JSONObject createMailContent(List<Event> events, int year, int month) {
 		JSONObject sections = new JSONObject();
 		sections.put("header", createSubject(year, month));
-		int gdgIndex = 0;
-		int gbgIndex = 0;
-		int gegIndex = 0;
-		int gxgIndex = 0;
-		for (Event event : events) {
-			if (event.isPublished()) {
-				String fieldNameStart;
-				String group = event.getGroupShortcut();
-				switch (group) {
-					case "GDG":
-						fieldNameStart = "repeat_2:" + gdgIndex + ":gdg_";
-						gdgIndex++;
-						break;
-					case "GBG":
-						fieldNameStart = "repeat_3:" + gbgIndex + ":gbg_";
-						gbgIndex++;
-						break;
-					case "GEG":
-						fieldNameStart = "repeat_4:" + gegIndex + ":geg_";
-						gegIndex++;
-						break;
-					case "GXG":
-						fieldNameStart = "repeat_5:" + gxgIndex + ":gxg_";
-						gxgIndex++;
-						break;
-					default:
-						throw new IllegalArgumentException("Unknown group " + group);
-				}
 
-				sections.put(fieldNameStart + "event_title", event.getEventName());
-				sections.put(fieldNameStart + "event_description", event.getNewsletterText());
-				sections.put(fieldNameStart + "event_date", event.getFromDate());
-				sections.put(fieldNameStart + "event_button", event.getNewsletterButtonLabel());
-				sections.put(fieldNameStart + "event_location", event.getAddress());
-			}
+		Map<String, List<Event>> eventsByCity = splitEventsByCities(events);
+		int index = 0;
+		for (String city : eventsByCity.keySet()) {
+			sections.put("repeat_1:" + index + ":city", city);
+			sections.put("repeat_1:" + index + ":events", createEventsHtml(eventsByCity.get(city)));
+			index++;
 		}
 
 		JSONObject mailContent = new JSONObject();
 		mailContent.put("sections", sections);
 		return mailContent;
+	}
+
+	private String createEventsHtml(List<Event> events) {
+		StringBuilder result = new StringBuilder();
+		for (Event event : events) {
+			result.append(String.format(" <tr>\n" +
+							"    <td class=\"chapter\">\n" +
+							"        <span class=\"%s_color chapter_mark\">%s</span>\n" +
+							"    </td>\n" +
+							"    <td class=\"event_name\">\n" +
+							"        <a href=\"%s\" target=\"_blank\">\n" +
+							"            %s\n" +
+							"        </a><br/>\n" +
+							"        <span class=\"place\">%s</span>\n" +
+							"    </td>\n" +
+							"</tr>",
+					event.getGroupShortcut().toLowerCase(),
+					event.getGroupShortcut().toUpperCase(),
+					event.getLink(),
+					event.getEventName(),
+					event.getFromDate()));
+		}
+		return result.toString();
+	}
+
+	private Map<String, List<Event>> splitEventsByCities(List<Event> events) {
+		Map<String, List<Event>> result = new HashMap<>();
+		for (Event event : events) {
+			if (!result.containsKey(event.getCity())) {
+				result.put(event.getCity(), new ArrayList<Event>());
+			}
+			result.get(event.getCity()).add(event);
+		}
+		return result;
 	}
 
 	private List<Event> readEvents(int year, int month) throws IOException {
