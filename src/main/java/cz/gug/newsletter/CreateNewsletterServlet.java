@@ -3,6 +3,7 @@ package cz.gug.newsletter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +47,10 @@ public class CreateNewsletterServlet extends HttpServlet {
 		int month = Integer.parseInt(request.getParameter("month"));
 
 		List<Event> events = readEvents(year, month);
+		if (events.isEmpty()) {
+			response.getWriter().print("<h1>No events found for selected month and year.</h1>");
+			return;
+		}
 		JSONObject requestData = createMailchimpRequestData(events, year, month);
 		String campaignUrl = createMailchimpCampaign(requestData);
 		response.getWriter().print("<a href = \"" + campaignUrl + "\">" + campaignUrl + "</a>");
@@ -89,7 +94,9 @@ public class CreateNewsletterServlet extends HttpServlet {
 
 		Map<String, List<Event>> eventsByCity = splitEventsByCities(events);
 		int index = 0;
-		for (String city : eventsByCity.keySet()) {
+		ArrayList<String> cities = new ArrayList<>(eventsByCity.keySet());
+		Collections.sort(cities);
+		for (String city : cities) {
 			sections.put("repeat_1:" + index + ":city", city);
 			sections.put("repeat_1:" + index + ":events", createEventsHtml(eventsByCity.get(city)));
 			index++;
