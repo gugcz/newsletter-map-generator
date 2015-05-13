@@ -2,11 +2,19 @@
 <html>
 <head>
     <title>GUG Newsletter</title>
+    <script type="text/javascript">
+        function setDefaultValues() {
+            var date = new Date();
+            date.setDate(date.getDate() + 25);
+            document.getElementById("selectMonth").value = date.getMonth() + 1;
+            document.getElementById("selectYear").value = date.getFullYear();
+        }
+    </script>
 </head>
-<body>
+<body onload="setDefaultValues()">
 <h2>Automatické generování GUG newsletteru</h2>
 <form action="createNewsletter" method="post">
-    <select name="month">
+    <select id="selectMonth" name="month">
         <option value="1">Leden</option>
         <option value="2">Únor</option>
         <option value="3">Březen</option>
@@ -20,7 +28,7 @@
         <option value="11">Listopad</option>
         <option value="12">Prosinec</option>
     </select>
-    <select name="year">
+    <select id="selectYear" name="year">
         <option value="2010">2010</option>
         <option value="2011">2011</option>
         <option value="2012">2012</option>
