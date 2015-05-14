@@ -2,6 +2,7 @@ package cz.gug.newsletter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		Map<String, List<Event>> eventsByCity = splitEventsByCities(events);
 		int index = 0;
 		ArrayList<String> cities = new ArrayList<>(eventsByCity.keySet());
-		Collections.sort(cities);
+		sortUsingLocale(cities);
 		for (String city : cities) {
 			sections.put("repeat_1:" + index + ":city", city);
 			sections.put("repeat_1:" + index + ":events", createEventsHtml(eventsByCity.get(city)));
@@ -161,5 +162,11 @@ public class CreateNewsletterServlet extends HttpServlet {
 			events.add(new Event(eventsArray.getJSONObject(i)));
 		}
 		return events;
+	}
+
+	private void sortUsingLocale(List list) {
+		Collator collator = Collator.getInstance(Locale.forLanguageTag("cs"));
+		collator.setStrength(Collator.PRIMARY);
+		Collections.sort(list, collator);
 	}
 }
