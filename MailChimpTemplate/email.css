@@ -237,8 +237,12 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 	width: 375px;
 	float:left;
 }
-.column tr td { padding: 15px; }
-.column-wrap { 
+
+.column tr td {
+    padding: 5px;
+}
+
+.column-wrap {
 	padding:0!important; 
 	margin:0 auto; 
 	max-width:750px!important;
@@ -263,7 +267,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 }
 
 .events_summary h4 {
-  padding: 10px 0 10px 1px;
+    padding: 5px 0 5px 1px;
   font-size: 18px;
 }
 
@@ -280,6 +284,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 
 .events_summary .chapter_mark {
   font-weight: bold;
+    font-size: 13pt;
 }
 
 .events_summary .event_name {
@@ -287,7 +292,8 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 }
 
 .events_summary a {
-  text-decoration: none;
+    text-decoration: none;
+    font-size: 13pt;
 }
 
 .events_summary .place {
