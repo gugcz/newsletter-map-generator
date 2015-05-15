@@ -21,7 +21,6 @@ import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,8 +79,11 @@ public class CreateNewsletterServlet extends HttpServlet {
 
 	private String createSubject(int year, int month) {
 		DateTime dateTime = new DateTime(year, month, 1, 0, 0);
-		return DateTimeFormat.forPattern("MMMM YYYY").withLocale(Configuration.getInstance().getLocale())
-				.print(dateTime).toUpperCase();
+		return String.format("Naše akce v %s %d", getMonthName(month), year);
+	}
+
+	private String getMonthName(int month) {
+		return Configuration.MONTH_NAMES[month - 1];
 	}
 
 	private JSONObject createMailContent(List<Event> events, int year, int month) {

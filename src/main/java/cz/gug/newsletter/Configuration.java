@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 
 public class Configuration {
 
+	public static final String[] MONTH_NAMES = {"lednu", "únoru", "březnu", "dubnu", "květnu", "červnu", "červenci", "srpnu",
+			"září", "říjnu", "listopadu", "prosinci"};
+
 	private static final Logger LOG = Logger.getLogger(Configuration.class.getName());
 
 	private static final String PROPERTIES_FILE = "/newsletter.properties";
