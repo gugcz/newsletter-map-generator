@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -35,11 +34,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		try {
-			configuration = new Configuration();
-		} catch (IOException e) {
-			throw new ServletException(e);
-		}
+		configuration = Configuration.getInstance();
 		requestFactory = new UrlFetchTransport().createRequestFactory();
 	}
 
@@ -85,7 +80,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 
 	private String createSubject(int year, int month) {
 		DateTime dateTime = new DateTime(year, month, 1, 0, 0);
-		return DateTimeFormat.forPattern("MMMM YYYY").withLocale(Locale.forLanguageTag("cs"))
+		return DateTimeFormat.forPattern("MMMM YYYY").withLocale(Configuration.getInstance().getLocale())
 				.print(dateTime).toUpperCase();
 	}
 
@@ -165,7 +160,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 	}
 
 	private void sortUsingLocale(List list) {
-		Collator collator = Collator.getInstance(Locale.forLanguageTag("cs"));
+		Collator collator = Collator.getInstance(configuration.getLocale());
 		collator.setStrength(Collator.PRIMARY);
 		Collections.sort(list, collator);
 	}

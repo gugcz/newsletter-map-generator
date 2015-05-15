@@ -1,7 +1,5 @@
 package cz.gug.newsletter;
 
-import java.util.Locale;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
@@ -25,7 +23,7 @@ public class Event {
 
 		String rawFromDate = jsonObject.getString("date_from");
 		DateTime parsedDate = ISODateTimeFormat.dateTimeParser().parseDateTime(rawFromDate);
-		fromDate = DateTimeFormat.shortDateTime().withLocale(Locale.forLanguageTag("cs")).print(parsedDate);
+		fromDate = DateTimeFormat.shortDateTime().withLocale(Configuration.getInstance().getLocale()).print(parsedDate);
 
 		JSONObject embedded = jsonObject.getJSONObject("_embedded");
 		JSONArray groups = embedded.getJSONArray("groups");
