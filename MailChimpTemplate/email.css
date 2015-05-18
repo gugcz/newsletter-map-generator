@@ -111,7 +111,8 @@ table.head-wrap { width: 100%;}
 table.body-wrap { width: 100%; background: #EAEDEF;}
 
 table.body-wrap .center.campaign_name p {
-  font-size: 18px;
+    font-size: 32px;
+    font-weight: bold;
   text-align: center;
   color: #1B2F3A;
 }
