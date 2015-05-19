@@ -269,6 +269,9 @@ div.inside-content {
   margin: 0 auto;
 }
 
+.inside-container {
+	padding: 0 0 5px 0;
+}
 
 .events_summary h4 {
     padding: 0 0 8px 1px;
