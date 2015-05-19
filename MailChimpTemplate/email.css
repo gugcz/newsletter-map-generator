@@ -271,7 +271,7 @@ div.inside-content {
 
 
 .events_summary h4 {
-    padding: 5px 0 5px 1px;
+    padding: 0 0 8px 1px;
   font-size: 18px;
 }
 
@@ -305,6 +305,10 @@ div.inside-content {
   font-size: 15px;
   line-height: 25px;
   height: 25px;
+}
+
+.summary_event td {
+	padding-bottom: 5px;
 }
 
 .delimiter hr {
