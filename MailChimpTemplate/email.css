@@ -258,16 +258,17 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 	float:left;
 }
 
-.column.c1, .column.c3 {
-	float:left;
-  width: 75px;
-	min-width: 75px;
+table.inside-wrap {
+  width: 100%;
+  padding: 15px;
 }
 
-.column.c2 {
-	float:left;
-  padding: 0 10px;
+div.inside-content {
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
 }
+
 
 .events_summary h4 {
     padding: 5px 0 5px 1px;
