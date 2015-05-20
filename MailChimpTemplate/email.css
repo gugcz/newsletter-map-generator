@@ -303,6 +303,10 @@ div.inside-content {
     font-size: 13pt;
 }
 
+.events_summary a:hover {
+    text-decoration: underline;
+}
+
 .events_summary .place {
   color: #7B868B;
   font-size: 15px;
