@@ -270,11 +270,11 @@ div.inside-content {
 }
 
 .inside-container {
-	padding: 0 0 5px 0;
+	padding: 0 0 20px 0;
 }
 
 .events_summary h4 {
-    padding: 0 0 8px 1px;
+	padding: 0 0 20px 1px;
   font-size: 18px;
 }
 
@@ -295,7 +295,7 @@ div.inside-content {
 }
 
 .events_summary .event_name {
-  padding-left: 10px;
+	padding-left: 20px;
 }
 
 .events_summary a {
