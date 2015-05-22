@@ -111,10 +111,11 @@ table.head-wrap { width: 100%;}
 table.body-wrap { width: 100%; background: #EAEDEF;}
 
 table.body-wrap .center.campaign_name p {
-    font-size: 32px;
-    font-weight: bold;
+	font-size: 24px;
   text-align: center;
   color: #1B2F3A;
+	margin: 0;
+	padding: 25px;
 }
 
 table.body-wrap .events_summary .cities {
@@ -273,13 +274,22 @@ div.inside-content {
 	padding: 0 0 20px 0;
 }
 
+.header_logo img {
+	padding: 60px;
+}
+
 .events_summary h4 {
 	padding: 0 0 20px 1px;
   font-size: 18px;
 }
 
+.events_summary h4 span {
+	vertical-align: middle;
+}
+
 .events_summary img {
   padding-right: 10px;
+	vertical-align: middle;
 }
 
 .events_summary .chapter {
@@ -287,6 +297,7 @@ div.inside-content {
   vertical-align: top;
   text-align: right;
   padding-left: 25px;
+	padding-top: 2px;
 }
 
 .events_summary .chapter_mark {
@@ -300,7 +311,7 @@ div.inside-content {
 
 .events_summary a {
     text-decoration: none;
-    font-size: 13pt;
+	font-size: 15pt;
 }
 
 .events_summary a:hover {
@@ -310,8 +321,7 @@ div.inside-content {
 .events_summary .place {
   color: #7B868B;
   font-size: 15px;
-  line-height: 25px;
-  height: 25px;
+	line-height: 20px;
 }
 
 .summary_event td {
