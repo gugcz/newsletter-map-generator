@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joda.time.DateTimeZone;
+
 public class Configuration {
 
 	public static final String[] MONTH_NAMES = {"lednu", "únoru", "březnu", "dubnu", "květnu", "červnu", "červenci", "srpnu",
@@ -41,6 +43,10 @@ public class Configuration {
 
 	public Locale getLocale() {
 		return Locale.forLanguageTag(getProperty("locale"));
+	}
+
+	public DateTimeZone getTimeZone() {
+		return DateTimeZone.forID(getProperty("timezone"));
 	}
 
 

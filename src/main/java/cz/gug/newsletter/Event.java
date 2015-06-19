@@ -23,7 +23,10 @@ public class Event {
 
 		String rawFromDate = jsonObject.getString("date_from");
 		DateTime parsedDate = ISODateTimeFormat.dateTimeParser().parseDateTime(rawFromDate);
-		fromDate = DateTimeFormat.shortDateTime().withLocale(Configuration.getInstance().getLocale()).print(parsedDate);
+		fromDate = DateTimeFormat.shortDateTime()
+				.withLocale(Configuration.getInstance().getLocale())
+				.withZone(Configuration.getInstance().getTimeZone())
+				.print(parsedDate);
 
 		JSONObject embedded = jsonObject.getJSONObject("_embedded");
 		JSONArray groups = embedded.getJSONArray("groups");
