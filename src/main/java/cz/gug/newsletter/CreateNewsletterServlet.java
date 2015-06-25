@@ -20,9 +20,6 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -41,7 +38,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 
-		List<Event> events = readEvents(year, month);
+		List<Event> events = new EventReader(requestFactory).readEvents(year, month);
 		if (events.isEmpty()) {
 			response.getWriter().print("<h1>No events found for selected month and year.</h1>");
 			return;
@@ -78,7 +75,6 @@ public class CreateNewsletterServlet extends HttpServlet {
 	}
 
 	private String createSubject(int year, int month) {
-		DateTime dateTime = new DateTime(year, month, 1, 0, 0);
 		return String.format("Naše akce v %s %d", getMonthName(month), year);
 	}
 
@@ -137,28 +133,6 @@ public class CreateNewsletterServlet extends HttpServlet {
 			result.get(event.getCity()).add(event);
 		}
 		return result;
-	}
-
-	private List<Event> readEvents(int year, int month) throws IOException {
-		DateTime dateFrom = new DateTime(year, month, 1, 1, 0, 0);
-		DateTime dateTo = new DateTime(year, month + 1, 1, 0, 0);
-
-		GenericUrl url = new GenericUrl(configuration.getProperty("gug.web.endpoint"));
-		url.put("Token", configuration.getProperty("gug.web.api.key"));
-		url.put("date_from_after", ISODateTimeFormat.dateTime().print(dateFrom));
-		url.put("date_from_before", ISODateTimeFormat.dateTime().print(dateTo));
-		url.put("date_from_status", "known");
-		HttpRequest eventsRequest = requestFactory.buildGetRequest(url);
-		InputStream eventsInputStream = eventsRequest.execute().getContent();
-
-		JSONObject jsonObject = new JSONObject(new JSONTokener(eventsInputStream));
-
-		JSONArray eventsArray = jsonObject.getJSONObject("_embedded").getJSONArray("event_occurrences");
-		List<Event> events = new ArrayList<>(eventsArray.length());
-		for (int i = 0; i < eventsArray.length(); i++) {
-			events.add(new Event(eventsArray.getJSONObject(i)));
-		}
-		return events;
 	}
 
 	private void sortUsingLocale(List list) {
