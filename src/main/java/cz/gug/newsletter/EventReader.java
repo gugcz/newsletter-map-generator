@@ -3,7 +3,9 @@ package cz.gug.newsletter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
@@ -23,7 +25,7 @@ public class EventReader {
     	this.requestFactory = requestFactory;
 	}
 
-	public List<Event> readEvents(int year, int month) throws IOException {
+	public Map<String, List<Event>> readEvents(int year, int month) throws IOException {
 		DateTime dateFrom = new DateTime(year, month, 1, 1, 0, 0);
 		DateTime dateTo = new DateTime(year, month + 1, 1, 0, 0);
 
@@ -42,7 +44,18 @@ public class EventReader {
 		for (int i = 0; i < eventsArray.length(); i++) {
 			events.add(new Event(eventsArray.getJSONObject(i)));
 		}
-		return events;
+		return splitEventsByCities(events);
+	}
+
+	private Map<String, List<Event>> splitEventsByCities(List<Event> events) {
+		Map<String, List<Event>> result = new HashMap<>();
+		for (Event event : events) {
+			if (!result.containsKey(event.getCity())) {
+				result.put(event.getCity(), new ArrayList<Event>());
+			}
+			result.get(event.getCity()).add(event);
+		}
+		return result;
 	}
 
 }

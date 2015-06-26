@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +37,12 @@ public class CreateNewsletterServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 
-		List<Event> events = new EventReader(requestFactory).readEvents(year, month);
-		if (events.isEmpty()) {
+		Map<String, List<Event>> eventsByCity = new EventReader(requestFactory).readEvents(year, month);
+		if (eventsByCity.isEmpty()) {
 			response.getWriter().print("<h1>No events found for selected month and year.</h1>");
 			return;
 		}
-		JSONObject requestData = createMailchimpRequestData(events, year, month);
+		JSONObject requestData = createMailchimpRequestData(eventsByCity, year, month);
 		String campaignUrl = createMailchimpCampaign(requestData);
 		response.getWriter().print("<a href = \"" + campaignUrl + "\">" + campaignUrl + "</a>");
 	}
@@ -57,7 +56,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		return jsonObject.getString("archive_url");
 	}
 
-	private JSONObject createMailchimpRequestData(List<Event> events, int year, int month) {
+	private JSONObject createMailchimpRequestData(Map<String, List<Event>> eventsByCity, int year, int month) {
 		JSONObject requestData = new JSONObject();
 		requestData.put("apikey", configuration.getProperty("mailchimp.api.key"));
 		requestData.put("type", "regular");
@@ -70,7 +69,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		options.put("subject", createSubject(year, month));
 		requestData.put("options", options);
 
-		requestData.put("content", createMailContent(events, year, month));
+		requestData.put("content", createMailContent(eventsByCity, year, month));
 		return requestData;
 	}
 
@@ -82,11 +81,10 @@ public class CreateNewsletterServlet extends HttpServlet {
 		return Configuration.MONTH_NAMES[month - 1];
 	}
 
-	private JSONObject createMailContent(List<Event> events, int year, int month) {
+	private JSONObject createMailContent(Map<String, List<Event>> eventsByCity, int year, int month) {
 		JSONObject sections = new JSONObject();
 		sections.put("header", createSubject(year, month));
 
-		Map<String, List<Event>> eventsByCity = splitEventsByCities(events);
 		int index = 0;
 		ArrayList<String> cities = new ArrayList<>(eventsByCity.keySet());
 		sortUsingLocale(cities);
@@ -122,17 +120,6 @@ public class CreateNewsletterServlet extends HttpServlet {
 					event.getFromDate()));
 		}
 		return result.toString();
-	}
-
-	private Map<String, List<Event>> splitEventsByCities(List<Event> events) {
-		Map<String, List<Event>> result = new HashMap<>();
-		for (Event event : events) {
-			if (!result.containsKey(event.getCity())) {
-				result.put(event.getCity(), new ArrayList<Event>());
-			}
-			result.get(event.getCity()).add(event);
-		}
-		return result;
 	}
 
 	private void sortUsingLocale(List list) {

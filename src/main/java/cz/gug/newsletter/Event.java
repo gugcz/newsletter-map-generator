@@ -15,6 +15,7 @@ public class Event {
 	private String address;
 	private String city;
 	private String link;
+	private int day;
 
 	public Event(JSONObject jsonObject){
 		published = jsonObject.getBoolean("is_published");
@@ -27,6 +28,7 @@ public class Event {
 				.withLocale(Configuration.getInstance().getLocale())
 				.withZone(Configuration.getInstance().getTimeZone())
 				.print(parsedDate);
+		day = parsedDate.getDayOfMonth();
 
 		JSONObject embedded = jsonObject.getJSONObject("_embedded");
 		JSONArray groups = embedded.getJSONArray("groups");
@@ -78,5 +80,14 @@ public class Event {
 
 	public String getLink() {
 		return link;
+	}
+
+	public JSONObject toJSON() {
+		JSONObject result = new JSONObject();
+		result.put("groupShortcut", groupShortcut);
+		result.put("eventName", eventName);
+		result.put("city", city);
+		result.put("day", day);
+		return result;
 	}
 }

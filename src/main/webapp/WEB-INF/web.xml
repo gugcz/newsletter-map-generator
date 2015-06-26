@@ -7,8 +7,17 @@
         <servlet-name>CreateNewsletterServlet</servlet-name>
         <servlet-class>cz.gug.newsletter.CreateNewsletterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetMapDataServlet</servlet-name>
+        <servlet-class>cz.gug.newsletter.GetMapDataServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>CreateNewsletterServlet</servlet-name>
         <url-pattern>/createNewsletter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMapDataServlet</servlet-name>
+        <url-pattern>/getMapData</url-pattern>
     </servlet-mapping>
 </web-app>
