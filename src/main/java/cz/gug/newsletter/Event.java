@@ -11,6 +11,7 @@ public class Event {
 	private boolean published;
 	private String groupShortcut;
 	private String eventName;
+	private String occurrenceName;
 	private String fromDate;
 	private String address;
 	private String city;
@@ -55,6 +56,10 @@ public class Event {
 		if (address == null){
 			address = city;
 		}
+
+		if (jsonObject.getBoolean("show_occurence_name")) {
+			occurrenceName = jsonObject.getString("occurence_name");
+		}
 	}
 
 	public boolean isPublished() {
@@ -85,10 +90,16 @@ public class Event {
 		return link;
 	}
 
+	public String getOccurrenceName() {
+		return occurrenceName;
+	}
+
 	public JSONObject toJSON() {
 		JSONObject result = new JSONObject();
+		result.put("published", published);
 		result.put("groupShortcut", groupShortcut);
 		result.put("eventName", eventName);
+		result.put("occurrenceName", occurrenceName);
 		result.put("city", city);
 		result.put("day", day);
 		return result;

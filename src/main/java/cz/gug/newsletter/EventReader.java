@@ -25,7 +25,7 @@ public class EventReader {
     	this.requestFactory = requestFactory;
 	}
 
-	public Map<String, List<Event>> readEvents(int year, int month) throws IOException {
+	public Map<String, List<Event>> readEvents(int year, int month, boolean publishedOnly) throws IOException {
 		DateTime dateFrom = new DateTime(year, month, 1, 1, 0, 0);
 		DateTime dateTo = new DateTime(year, month + 1, 1, 0, 0);
 
@@ -42,7 +42,10 @@ public class EventReader {
 		JSONArray eventsArray = jsonObject.getJSONObject("_embedded").getJSONArray("event_occurrences");
 		List<Event> events = new ArrayList<>(eventsArray.length());
 		for (int i = 0; i < eventsArray.length(); i++) {
-			events.add(new Event(eventsArray.getJSONObject(i)));
+			Event event = new Event(eventsArray.getJSONObject(i));
+			if (!publishedOnly || event.isPublished()) {
+				events.add(event);
+			}
 		}
 		return splitEventsByCities(events);
 	}

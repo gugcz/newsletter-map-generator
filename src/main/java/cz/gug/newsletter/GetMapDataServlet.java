@@ -27,7 +27,7 @@ public class GetMapDataServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 
-		Map<String, List<Event>> events = new EventReader(requestFactory).readEvents(year, month);
+		Map<String, List<Event>> events = new EventReader(requestFactory).readEvents(year, month, false);
 		JSONObject result = new JSONObject();
 		for (Map.Entry<String, List<Event>> eventsInCity : events.entrySet()) {
 			JSONArray eventsArray = new JSONArray();

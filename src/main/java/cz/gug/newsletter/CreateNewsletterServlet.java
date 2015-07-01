@@ -37,7 +37,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 
-		Map<String, List<Event>> eventsByCity = new EventReader(requestFactory).readEvents(year, month);
+		Map<String, List<Event>> eventsByCity = new EventReader(requestFactory).readEvents(year, month, true);
 		if (eventsByCity.isEmpty()) {
 			response.getWriter().print("<h1>No events found for selected month and year.</h1>");
 			return;
@@ -102,6 +102,10 @@ public class CreateNewsletterServlet extends HttpServlet {
 	private String createEventsHtml(List<Event> events) {
 		StringBuilder result = new StringBuilder();
 		for (Event event : events) {
+			String nameWithOccurrence = event.getEventName();
+			if (event.getOccurrenceName() != null) {
+				nameWithOccurrence += " " + event.getOccurrenceName();
+			}
 			result.append(String.format(" <tr>\n" +
 							"    <td class=\"chapter\">\n" +
 							"        <span class=\"%s_color chapter_mark\">%s</span>\n" +
@@ -116,7 +120,7 @@ public class CreateNewsletterServlet extends HttpServlet {
 					event.getGroupShortcut().toLowerCase(),
 					event.getGroupShortcut().toUpperCase(),
 					event.getLink(),
-					event.getEventName(),
+					nameWithOccurrence,
 					event.getFromDate()));
 		}
 		return result.toString();

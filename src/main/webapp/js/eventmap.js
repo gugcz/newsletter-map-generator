@@ -51,20 +51,33 @@ function createMarkersForCity(cityName, events) {
 
     var width = 180;
     var height = 10;
+    var index = 0;
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
+
+        var nameWithOccurrence = event.eventName;
+        if (event.occurrenceName) {
+            nameWithOccurrence += " " + event.occurrenceName;
+        }
+
+        if (!event.published) {
+            $("<div/>").html(event.day + ". " + nameWithOccurrence + ", " + event.groupShortcut, +", " + event.city)
+                .appendTo("unpublishedEvents");
+        }
+
         var table = $("<table/>").addClass("labelTable")
             .css("position", "relative")
-            .css("left", (i * 10) + "px")
-            .css("top", -(i * 10) + "px")
+            .css("left", (index * 10) + "px")
+            .css("top", -(index * 10) + "px")
             .appendTo(div);
         var tr = $("<tr/>").appendTo(table);
         var groupStyle = event.groupShortcut.toLowerCase();
         $("<td/>").addClass("date " + groupStyle).html(event.day + ".").appendTo(tr);
-        $("<td/>").addClass("name").html(event.eventName).appendTo(tr);
+        $("<td/>").addClass("name").html(nameWithOccurrence).appendTo(tr);
 
         width += padding;
         height += 45;
+        index++;
     }
 
     div.style.width = width + "px";
@@ -82,10 +95,6 @@ function createMarkersForCity(cityName, events) {
     });
 
     cities[cityName] = {"marker": marker, "groupPosition": groupPosition};
-
-    google.maps.event.addListener(marker, "click", function () {
-        window.open(link)
-    });
 }
 
 function getParameterByName(name) {
