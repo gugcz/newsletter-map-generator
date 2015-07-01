@@ -48,6 +48,9 @@ public class Event {
 		}
 
 		city = groups.getJSONObject(0).getString("location");
+		if ("Prague".equals(city)) {
+			city = "Praha";
+		}
 
 		if (address == null){
 			address = city;
