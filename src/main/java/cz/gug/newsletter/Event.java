@@ -102,6 +102,7 @@ public class Event {
 		result.put("occurrenceName", occurrenceName);
 		result.put("city", city);
 		result.put("day", day);
+		result.put("fromDate", fromDate);
 		return result;
 	}
 }

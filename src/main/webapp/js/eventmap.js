@@ -61,23 +61,23 @@ function createMarkersForCity(cityName, events) {
         }
 
         if (!event.published) {
-            $("<div/>").html(event.day + ". " + nameWithOccurrence + ", " + event.groupShortcut, +", " + event.city)
-                .appendTo("unpublishedEvents");
+            $("<div/>").html(event.fromDate + ", " + nameWithOccurrence + ", " + event.groupShortcut + " " + event.city)
+                .appendTo("#unpublishedEvents");
+        } else {
+            var table = $("<table/>").addClass("labelTable")
+                .css("position", "relative")
+                .css("left", (index * 10) + "px")
+                .css("top", -(index * 10) + "px")
+                .appendTo(div);
+            var tr = $("<tr/>").appendTo(table);
+            var groupStyle = event.groupShortcut.toLowerCase();
+            $("<td/>").addClass("date " + groupStyle).html(event.day + ".").appendTo(tr);
+            $("<td/>").addClass("name").html(nameWithOccurrence).appendTo(tr);
+
+            width += padding;
+            height += 45;
+            index++;
         }
-
-        var table = $("<table/>").addClass("labelTable")
-            .css("position", "relative")
-            .css("left", (index * 10) + "px")
-            .css("top", -(index * 10) + "px")
-            .appendTo(div);
-        var tr = $("<tr/>").appendTo(table);
-        var groupStyle = event.groupShortcut.toLowerCase();
-        $("<td/>").addClass("date " + groupStyle).html(event.day + ".").appendTo(tr);
-        $("<td/>").addClass("name").html(nameWithOccurrence).appendTo(tr);
-
-        width += padding;
-        height += 45;
-        index++;
     }
 
     div.style.width = width + "px";
