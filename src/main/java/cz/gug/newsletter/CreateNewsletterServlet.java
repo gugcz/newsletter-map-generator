@@ -85,13 +85,17 @@ public class CreateNewsletterServlet extends HttpServlet {
 		JSONObject sections = new JSONObject();
 		sections.put("header", createSubject(year, month));
 
-		int index = 0;
 		ArrayList<String> cities = new ArrayList<>(eventsByCity.keySet());
 		sortUsingLocale(cities);
-		for (String city : cities) {
-			sections.put("repeat_1:" + index + ":city", city);
-			sections.put("repeat_1:" + index + ":events", createEventsHtml(eventsByCity.get(city)));
-			index++;
+		for (int i = 0; i < cities.size(); i++) {
+			String city = cities.get(i);
+			sections.put("repeat_1:" + i + ":city", city);
+			List<Event> eventsInCity = eventsByCity.get(city);
+			for (int j = 0; j < eventsInCity.size(); j++) {
+				Event event = eventsInCity.get(j);
+				String prefix = "repeat_1:" + i + ":repeat_1:" + j + ":";
+				addEvent(sections, prefix, event);
+			}
 		}
 
 		JSONObject mailContent = new JSONObject();
@@ -99,31 +103,22 @@ public class CreateNewsletterServlet extends HttpServlet {
 		return mailContent;
 	}
 
-	private String createEventsHtml(List<Event> events) {
-		StringBuilder result = new StringBuilder();
-		for (Event event : events) {
-			String nameWithOccurrence = event.getEventName();
-			if (event.getOccurrenceName() != null) {
-				nameWithOccurrence += " " + event.getOccurrenceName();
-			}
-			result.append(String.format(" <tr>\n" +
-							"    <td class=\"chapter\">\n" +
-							"        <span class=\"%s_color chapter_mark\">%s</span>\n" +
-							"    </td>\n" +
-							"    <td class=\"event_name\">\n" +
-							"        <a href=\"%s\" target=\"_blank\">\n" +
-							"            %s\n" +
-							"        </a><br/>\n" +
-							"        <span class=\"place\">%s</span>\n" +
-							"    </td>\n" +
-							"</tr>",
-					event.getGroupShortcut().toLowerCase(),
-					event.getGroupShortcut().toUpperCase(),
-					event.getLink(),
-					nameWithOccurrence,
-					event.getFromDate()));
+	private void addEvent(JSONObject sections, String prefix, Event event) {
+		String nameWithOccurrence = event.getEventName();
+		if (event.getOccurrenceName() != null) {
+			nameWithOccurrence += " " + event.getOccurrenceName();
 		}
-		return result.toString();
+
+		sections.put(prefix + "chapter_mark",
+				String.format("<span class=\"%s_color chapter_mark\">%s</span>",
+						event.getGroupShortcut().toLowerCase(),
+						event.getGroupShortcut().toUpperCase()));
+		sections.put(prefix + "event_name_and_place",
+				String.format("<a href=\"%s\">%s</a><br>\n" +
+								"<span class=\"place\">%s</span>",
+						event.getLink(),
+						nameWithOccurrence,
+						event.getFromDate()));
 	}
 
 	private void sortUsingLocale(List list) {
