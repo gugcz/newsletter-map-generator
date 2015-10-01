@@ -49,7 +49,7 @@ function createMarkersForCity(cityName, events) {
     var padding = 10;
     var div = $("<div/>")[0];
 
-    var width = 180;
+    var width = 210;
     var height = 10;
     var index = 0;
     for (var i = 0; i < events.length; i++) {
@@ -81,7 +81,6 @@ function createMarkersForCity(cityName, events) {
     }
 
     div.style.width = width + "px";
-    div.style.height = height + "px";
 
     var latLng = new google.maps.LatLng(groupPosition.lat, groupPosition.lng);
 
