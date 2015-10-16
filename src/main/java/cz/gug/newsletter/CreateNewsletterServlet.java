@@ -69,7 +69,9 @@ public class CreateNewsletterServlet extends HttpServlet {
 		options.put("subject", createSubject(year, month));
 		requestData.put("options", options);
 
-		requestData.put("content", createMailContent(eventsByCity, year, month));
+		JSONObject mailContent = createMailContent(eventsByCity, year, month);
+		mailContent.put("text", createPlainText(eventsByCity, year, month));
+		requestData.put("content", mailContent);
 		return requestData;
 	}
 
@@ -101,6 +103,36 @@ public class CreateNewsletterServlet extends HttpServlet {
 		JSONObject mailContent = new JSONObject();
 		mailContent.put("sections", sections);
 		return mailContent;
+	}
+
+	private String createPlainText(Map<String, List<Event>> eventsByCity, int year, int month) {
+		StringBuilder result = new StringBuilder();
+		result.append("Otevřít v prohlížeči (*|ARCHIVE|*)\n\n")
+				.append("GUG.cz\n" + createSubject(year, month) + "\n")
+				.append("------------------------------------------------------------\n\n");
+
+		ArrayList<String> cities = new ArrayList<>(eventsByCity.keySet());
+		sortUsingLocale(cities);
+		for (int i = 0; i < cities.size(); i++) {
+			String city = cities.get(i);
+			result.append("** " + city + "\n")
+					.append("------------------------------------------------------------\n");
+
+			List<Event> eventsInCity = eventsByCity.get(city);
+			for (int j = 0; j < eventsInCity.size(); j++) {
+				Event event = eventsInCity.get(j);
+				result.append(event.getGroupShortcut().toUpperCase() + " - ")
+						.append(event.getEventName());
+				if (event.getOccurrenceName() != null) {
+					result.append(" " + event.getOccurrenceName());
+				}
+				result.append(" (" + event.getLink() + ")\n")
+						.append(event.getFromDate())
+						.append("\n\n");
+			}
+			result.append("\n\n");
+		}
+		return result.toString();
 	}
 
 	private void addEvent(JSONObject sections, String prefix, Event event) {
