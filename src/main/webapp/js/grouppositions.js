@@ -5,7 +5,7 @@ var GROUP_POSITIONS = {
     "ČR": null,
     "Havířov": {lng: 18.620636562500067, lat: 49.65395106273083, offsetX: 0.25, offsetY: 0.25},
     "Hradec Králové": {lng: 15.832169155273505, lat: 50.229455853915994, offsetX: 0.25, offsetY: 0.25},
-    "Jičín": {lng: 14.824860195312567, lat: 49.762635074611225, offsetX: 0.25, offsetY: 0.25},
+    "Jičín": {lng: 15.348084072265692, lat: 50.43167965164122, offsetX: 0.25, offsetY: 0.25},
     "Jihlava": {lng: 15.489533046875067, lat: 49.380283762609004, offsetX: 0.25, offsetY: 0.25},
     "Kladno": {lng: 14.028351406250067, lat: 50.178774301389176, offsetX: 0.8, offsetY: 0.25},
     "Kolín": {lng: 15.187409023437567, lat: 50.02165142982347, offsetX: 0.25, offsetY: 0.25},
