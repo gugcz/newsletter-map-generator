@@ -27,7 +27,7 @@ public class EventReader {
 
 	public Map<String, List<Event>> readEvents(int year, int month, boolean publishedOnly) throws IOException {
 		DateTime dateFrom = new DateTime(year, month, 1, 1, 0, 0);
-		DateTime dateTo = new DateTime(year, month + 1, 1, 0, 0);
+		DateTime dateTo = dateFrom.plusMonths(1);
 
 		GenericUrl url = new GenericUrl(configuration.getProperty("gug.web.endpoint"));
 		url.put("Token", configuration.getProperty("gug.web.api.key"));
