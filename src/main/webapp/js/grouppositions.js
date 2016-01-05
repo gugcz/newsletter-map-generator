@@ -10,6 +10,7 @@ var GROUP_POSITIONS = {
     "Kladno": {lng: 14.028351406250067, lat: 50.178774301389176, offsetX: 0.8, offsetY: 0.25},
     "Kolín": {lng: 15.187409023437567, lat: 50.02165142982347, offsetX: 0.25, offsetY: 0.25},
     "Liberec": {lng: 14.963562587890692, lat: 50.91475786353827, offsetX: 0.25, offsetY: 0.25},
+    "Litoměřice": {lng: 14.130546, lat: 50.538420, offsetX: 0.25, offsetY: 0.25},
     "Nový Jičín": {lng: 18.054840664062567, lat: 49.542504849934794, offsetX: 0.25, offsetY: 0.25},
     "Olomouc": {lng: 17.277557949218817, lat: 49.553136364130765, offsetX: 0.25, offsetY: 0.25},
     "Ostrava": {lng: 18.255341152343817, lat: 49.86606130712993, offsetX: 0.25, offsetY: 0.25},
