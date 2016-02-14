@@ -23,6 +23,7 @@ var GROUP_POSITIONS = {
     "Pardubice": {lng: 15.766937832031317, lat: 50.01331835490042, offsetX: 0.25, offsetY: 0.25},
     "Písek": {lng: 14.138214687500067, lat: 49.28154130718451, offsetX: 0.25, offsetY: 0.25},
     "Plzeň": {lng: 13.338959316406317, lat: 49.74333152792862, offsetX: 0.25, offsetY: 0.25},
+    "Poděbrady": {lng: 15.118888, lat: 50.142425, offsetX: 0.25, offsetY: 0.25},
     "Polička": {lng: 16.266815761718817, lat: 49.70978949555519, offsetX: 0.25, offsetY: 0.25},
     "Praha": {lng: 14.39158687988288, lat: 50.107381519870835, offsetX: 0.25, offsetY: 0.25},
     "Roudnice nad Labem": {lng: 14.260465, lat: 50.425205, offsetX: 0.25, offsetY: 0.25},
