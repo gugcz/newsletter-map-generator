@@ -15,6 +15,13 @@ buildscript {
     }
 }
 
+appengine {
+    appcfg {
+        email = 'leos.prikryl@gmail.com'
+        oauth2 = true
+    }
+}
+
 repositories {
     mavenCentral()
 }
