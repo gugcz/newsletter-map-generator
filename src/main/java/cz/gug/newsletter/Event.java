@@ -41,9 +41,9 @@ public class Event {
 
 		if (!embedded.isNull("venue")){
 			JSONObject venue = embedded.getJSONObject("venue");
-			if (JsonUtils.isNullOrEmpty(venue, "address")){
+			if (!JsonUtils.isNullOrEmpty(venue, "address")) {
 				address = venue.getString("address");
-			} else if (JsonUtils.isNullOrEmpty(venue, "name")){
+			} else if (!JsonUtils.isNullOrEmpty(venue, "name")) {
 				address = venue.getString("name");
 			}
 		}
