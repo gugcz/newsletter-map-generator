@@ -1,17 +1,21 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
+apply plugin: 'com.github.ben-manes.versions'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 version = '1.0'
 
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+
     }
 
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.59'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
     }
 }
 
@@ -27,10 +31,10 @@ repositories {
 }
 
 dependencies {
-    compile 'javax.servlet:javax.servlet-api:3.1.0'
-    compile 'com.google.http-client:google-http-client-appengine:1.20.0'
-    compile 'org.json:json:20140107'
-    compile 'joda-time:joda-time:2.7'
+    compile 'javax.servlet:javax.servlet-api:4.0.1'
+    compile 'com.google.http-client:google-http-client-appengine:1.23.0'
+    compile 'org.json:json:20180130'
+    compile 'joda-time:joda-time:2.10'
 
-    runtime 'com.google.appengine:appengine-api-1.0-sdk:1.9.18'
+    runtime 'com.google.appengine:appengine-api-1.0-sdk:1.9.64'
 }
