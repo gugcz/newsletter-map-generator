@@ -53,17 +53,15 @@ function createMailContent(events) {
     var sections = {};
     var gdgIndex = 0;
     $.each(events, function (i, event) {
-        if (event.is_published) {
-            var fieldNameStart = "repeat_1:" + gdgIndex + ":gdg_";
-            sections[fieldNameStart + "event_title"] = event.event_name;
-            sections[fieldNameStart + "event_description"] = event.event_tagline;
-            sections[fieldNameStart + "event_date"] = event.date_from;
-            sections[fieldNameStart + "event_button"] = "Registrace";
-            if (event._embedded.venue) {
-                sections[fieldNameStart + "event_location"] = event._embedded.venue.address;
-            }
-            gdgIndex++;
+        var fieldNameStart = "repeat_1:" + gdgIndex + ":gdg_";
+        sections[fieldNameStart + "event_title"] = event.event_name;
+        sections[fieldNameStart + "event_description"] = event.event_tagline;
+        sections[fieldNameStart + "event_date"] = event.date_from;
+        sections[fieldNameStart + "event_button"] = "Registrace";
+        if (event._embedded.venue) {
+            sections[fieldNameStart + "event_location"] = event._embedded.venue.address;
         }
+        gdgIndex++;
     });
 
 

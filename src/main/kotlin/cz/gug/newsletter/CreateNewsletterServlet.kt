@@ -4,6 +4,8 @@ import com.google.api.client.extensions.appengine.http.UrlFetchTransport
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.GenericUrl
 import com.google.api.client.http.HttpRequestFactory
+import cz.gug.newsletter.model.Event
+import cz.gug.newsletter.reader.EventReader
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.Collator
@@ -20,7 +22,7 @@ class CreateNewsletterServlet : HttpServlet() {
         val year = Integer.parseInt(request.getParameter("year"))
         val month = Integer.parseInt(request.getParameter("month"))
 
-        val eventsByCity = EventReader(requestFactory).readEvents(year, month, true)
+        val eventsByCity = EventReader().readEventsByCities(year, month)
         if (eventsByCity.isEmpty()) {
             response.writer.print("<h1>No events found for selected month and year.</h1>")
             return
@@ -104,12 +106,9 @@ class CreateNewsletterServlet : HttpServlet() {
             for (j in eventsInCity.indices) {
                 val event = eventsInCity[j]
                 result.append(event.groupShortcut.toUpperCase() + " - ")
-                    .append(event.eventName)
-                if (event.occurrenceName != null) {
-                    result.append(" " + event.occurrenceName!!)
-                }
+                    .append(event.name)
                 result.append(" (" + event.link + ")\n")
-                    .append(event.fromDate)
+                    .append(event.date)
                     .append("\n\n")
             }
             result.append("\n\n")
@@ -118,11 +117,6 @@ class CreateNewsletterServlet : HttpServlet() {
     }
 
     private fun addEvent(sections: JSONObject, prefix: String, event: Event) {
-        var nameWithOccurrence = event.eventName
-        if (event.occurrenceName != null) {
-            nameWithOccurrence += " " + event.occurrenceName!!
-        }
-
         sections.put(
             prefix + "chapter_mark",
             String.format(
@@ -136,8 +130,8 @@ class CreateNewsletterServlet : HttpServlet() {
             String.format(
                 "<a href=\"%s\">%s</a><br>\n" + "<span class=\"place\">%s</span>",
                 event.link,
-                nameWithOccurrence,
-                event.fromDate
+                event.name,
+                event.date
             )
         )
     }

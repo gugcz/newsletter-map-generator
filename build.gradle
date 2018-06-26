@@ -38,8 +38,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
-
 appengine {
     appcfg {
         email = 'leos.prikryl@gmail.com'
@@ -58,6 +56,10 @@ dependencies {
     compile 'com.google.http-client:google-http-client-appengine:1.23.0'
     compile 'org.json:json:20180130'
     compile 'joda-time:joda-time:2.10'
+    compile 'com.google.firebase:firebase-admin:6.2.0'
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
 
     runtime 'com.google.appengine:appengine-api-1.0-sdk:1.9.64'
+    runtime 'org.slf4j:slf4j-simple:1.7.25'
+
 }
