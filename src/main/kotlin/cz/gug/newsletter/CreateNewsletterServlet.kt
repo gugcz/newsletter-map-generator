@@ -89,7 +89,7 @@ class CreateNewsletterServlet : HttpServlet() {
     private fun createPlainText(eventsByCity: Map<String, List<Event>>, year: Int, month: Int): String {
         val result = StringBuilder()
         result.append("Otevřít v prohlížeči (*|ARCHIVE|*)\n\n")
-            .append("GUG.cz\n" + createSubject(year, month) + "\n")
+            .append("GUG.cz\n${createSubject(year, month)}\n")
             .append("------------------------------------------------------------\n\n")
 
         val cities = ArrayList(eventsByCity.keys)
@@ -104,8 +104,8 @@ class CreateNewsletterServlet : HttpServlet() {
                 val event = eventsInCity[j]
                 result.append(event.groupShortcut.toUpperCase() + " - ")
                     .append(event.name)
-                result.append(" (" + event.link + ")\n")
-                    .append(event.date)
+                result.append(" (${event.link})\n")
+                    .append("${event.date} ${event.time}")
                     .append("\n\n")
             }
             result.append("\n\n")
@@ -128,7 +128,7 @@ class CreateNewsletterServlet : HttpServlet() {
                 "<a href=\"%s\">%s</a><br>\n" + "<span class=\"place\">%s</span>",
                 event.link,
                 event.name,
-                event.date
+                "${event.date} ${event.time}"
             )
         )
     }
