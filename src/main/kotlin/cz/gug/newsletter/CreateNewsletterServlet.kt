@@ -31,20 +31,25 @@ class CreateNewsletterServlet : HttpServlet() {
     private fun createMailchimpCampaign(requestData: JSONObject): String {
         val url = URL(Configuration.getProperty("mailchimp.create.campaign.endpoint"))
         val conn = url.openConnection() as HttpURLConnection
-        conn.doOutput = true
-        conn.doInput = true
-        conn.requestMethod = "POST"
-        conn.setRequestProperty("Content-Type", "application/json")
-        conn.setRequestProperty("Accept", "application/json")
+        try {
+            conn.doOutput = true
+            conn.doInput = true
+            conn.requestMethod = "POST"
+            conn.setRequestProperty("Content-Type", "application/json")
+            conn.setRequestProperty("Accept", "application/json")
 
-        conn.outputStream.bufferedWriter().use { it.write(requestData.toString()) }
+            conn.outputStream.bufferedWriter().use { it.write(requestData.toString()) }
 
-        val respCode = conn.responseCode
-        return if (respCode == HttpURLConnection.HTTP_OK || respCode == HttpURLConnection.HTTP_NOT_FOUND) {
-            val jsonObject = JSONObject(JSONTokener(conn.inputStream))
-            jsonObject.getString("archive_url")
-        } else {
-            "Failed to generate newsletter. Mailchimp returned status $respCode."
+            val respCode = conn.responseCode
+            return if (respCode == HttpURLConnection.HTTP_OK || respCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                val jsonObject = JSONObject(JSONTokener(conn.inputStream))
+                conn.inputStream.close()
+                jsonObject.getString("archive_url")
+            } else {
+                "Failed to generate newsletter. Mailchimp returned status $respCode."
+            }
+        } finally {
+            conn.disconnect()
         }
     }
 
