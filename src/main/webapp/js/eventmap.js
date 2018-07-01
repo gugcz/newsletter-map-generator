@@ -16,7 +16,7 @@ function readData() {
         dataType: "json",
         data: {
             "year": year,
-            "month": month,
+            "month": month
         }
     }).done(function (data) {
         for (var city in GROUP_POSITIONS) {
@@ -42,7 +42,7 @@ function initMap() {
 
 function createMarkersForCity(cityName, events) {
     var groupPosition = GROUP_POSITIONS[cityName];
-    if (!groupPosition){
+    if (!groupPosition) {
         cities[cityName] = null;
         return;
     }
@@ -55,29 +55,21 @@ function createMarkersForCity(cityName, events) {
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
 
-        var nameWithOccurrence = event.eventName;
-        if (event.occurrenceName) {
-            nameWithOccurrence += " " + event.occurrenceName;
-        }
+        var eventDay = event.date.substring(0, event.date.indexOf("\.") + 1);
 
-        if (!event.published) {
-            $("<div/>").html(event.fromDate + ", " + nameWithOccurrence + ", " + event.groupShortcut + " " + event.city)
-                .appendTo("#unpublishedEvents");
-        } else {
-            var table = $("<table/>").addClass("labelTable")
-                .css("position", "relative")
-                .css("left", (index * 10) + "px")
-                .css("top", -(index * 10) + "px")
-                .appendTo(div);
-            var tr = $("<tr/>").appendTo(table);
-            var groupStyle = event.groupShortcut.toLowerCase();
-            $("<td/>").addClass("date " + groupStyle).html(event.day + ".").appendTo(tr);
-            $("<td/>").addClass("name").html(nameWithOccurrence).appendTo(tr);
+        var table = $("<table/>").addClass("labelTable")
+            .css("position", "relative")
+            .css("left", (index * 10) + "px")
+            .css("top", -(index * 10) + "px")
+            .appendTo(div);
+        var tr = $("<tr/>").appendTo(table);
+        var groupStyle = event.groupShortcut.toLowerCase();
+        $("<td/>").addClass("date " + groupStyle).html(eventDay).appendTo(tr);
+        $("<td/>").addClass("name").html(event.name).appendTo(tr);
 
-            width += padding;
-            height += 45;
-            index++;
-        }
+        width += padding;
+        height += 45;
+        index++;
     }
 
     div.style.width = width + "px";

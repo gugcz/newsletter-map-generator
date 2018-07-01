@@ -1,9 +1,9 @@
 package cz.gug.newsletter
 
-import com.google.api.client.extensions.appengine.http.UrlFetchTransport
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.GenericUrl
-import com.google.api.client.http.HttpRequestFactory
+import cz.gug.newsletter.model.Event
+import cz.gug.newsletter.model.RequestFactoryHolder
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.Collator
@@ -12,15 +12,14 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class CreateNewsletterServlet : HttpServlet() {
 
-    private val requestFactory: HttpRequestFactory = UrlFetchTransport().createRequestFactory()
+class CreateNewsletterServlet : HttpServlet() {
 
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         val year = Integer.parseInt(request.getParameter("year"))
         val month = Integer.parseInt(request.getParameter("month"))
 
-        val eventsByCity = EventReader(requestFactory).readEvents(year, month, true)
+        val eventsByCity = EventReader().readEvents(year, month)
         if (eventsByCity.isEmpty()) {
             response.writer.print("<h1>No events found for selected month and year.</h1>")
             return
@@ -33,7 +32,7 @@ class CreateNewsletterServlet : HttpServlet() {
     private fun createMailchimpCampaign(requestData: JSONObject): String {
         val url = GenericUrl(Configuration.getProperty("mailchimp.create.campaign.endpoint"))
         val content = ByteArrayContent.fromString("application/json", requestData.toString())
-        val httpRequest = requestFactory.buildPostRequest(url, content)
+        val httpRequest = RequestFactoryHolder.requestFactory.buildPostRequest(url, content)
         val inputStream = httpRequest.execute().content
         val jsonObject = JSONObject(JSONTokener(inputStream))
         return jsonObject.getString("archive_url")
@@ -104,12 +103,9 @@ class CreateNewsletterServlet : HttpServlet() {
             for (j in eventsInCity.indices) {
                 val event = eventsInCity[j]
                 result.append(event.groupShortcut.toUpperCase() + " - ")
-                    .append(event.eventName)
-                if (event.occurrenceName != null) {
-                    result.append(" " + event.occurrenceName!!)
-                }
+                    .append(event.name)
                 result.append(" (" + event.link + ")\n")
-                    .append(event.fromDate)
+                    .append(event.date)
                     .append("\n\n")
             }
             result.append("\n\n")
@@ -118,11 +114,6 @@ class CreateNewsletterServlet : HttpServlet() {
     }
 
     private fun addEvent(sections: JSONObject, prefix: String, event: Event) {
-        var nameWithOccurrence = event.eventName
-        if (event.occurrenceName != null) {
-            nameWithOccurrence += " " + event.occurrenceName!!
-        }
-
         sections.put(
             prefix + "chapter_mark",
             String.format(
@@ -136,8 +127,8 @@ class CreateNewsletterServlet : HttpServlet() {
             String.format(
                 "<a href=\"%s\">%s</a><br>\n" + "<span class=\"place\">%s</span>",
                 event.link,
-                nameWithOccurrence,
-                event.fromDate
+                event.name,
+                event.date
             )
         )
     }

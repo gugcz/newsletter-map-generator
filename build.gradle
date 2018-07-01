@@ -58,6 +58,7 @@ dependencies {
     compile 'com.google.http-client:google-http-client-appengine:1.23.0'
     compile 'org.json:json:20180130'
     compile 'joda-time:joda-time:2.10'
+    compile 'com.google.code.gson:gson:2.8.5'
 
     runtime 'com.google.appengine:appengine-api-1.0-sdk:1.9.64'
 }
