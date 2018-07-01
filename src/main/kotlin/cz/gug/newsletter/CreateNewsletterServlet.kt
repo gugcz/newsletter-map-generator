@@ -1,11 +1,10 @@
 package cz.gug.newsletter
 
-import com.google.api.client.http.ByteArrayContent
-import com.google.api.client.http.GenericUrl
 import cz.gug.newsletter.model.Event
-import cz.gug.newsletter.model.RequestFactoryHolder
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.Collator
 import java.util.*
 import javax.servlet.http.HttpServlet
@@ -30,12 +29,23 @@ class CreateNewsletterServlet : HttpServlet() {
     }
 
     private fun createMailchimpCampaign(requestData: JSONObject): String {
-        val url = GenericUrl(Configuration.getProperty("mailchimp.create.campaign.endpoint"))
-        val content = ByteArrayContent.fromString("application/json", requestData.toString())
-        val httpRequest = RequestFactoryHolder.requestFactory.buildPostRequest(url, content)
-        val inputStream = httpRequest.execute().content
-        val jsonObject = JSONObject(JSONTokener(inputStream))
-        return jsonObject.getString("archive_url")
+        val url = URL(Configuration.getProperty("mailchimp.create.campaign.endpoint"))
+        val conn = url.openConnection() as HttpURLConnection
+        conn.doOutput = true
+        conn.doInput = true
+        conn.requestMethod = "POST"
+        conn.setRequestProperty("Content-Type", "application/json")
+        conn.setRequestProperty("Accept", "application/json")
+
+        conn.outputStream.bufferedWriter().use { it.write(requestData.toString()) }
+
+        val respCode = conn.responseCode
+        return if (respCode == HttpURLConnection.HTTP_OK || respCode == HttpURLConnection.HTTP_NOT_FOUND) {
+            val jsonObject = JSONObject(JSONTokener(conn.inputStream))
+            jsonObject.getString("archive_url")
+        } else {
+            "Failed to generate newsletter. Mailchimp returned status $respCode."
+        }
     }
 
     private fun createMailchimpRequestData(eventsByCity: Map<String, List<Event>>, year: Int, month: Int): JSONObject {
