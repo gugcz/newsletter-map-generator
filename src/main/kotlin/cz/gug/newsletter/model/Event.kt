@@ -4,7 +4,7 @@ data class Event(
     var name: String = "",
     var date: String = "",
     var time: String = "",
-    var link: String = "",
+    var url: String = "",
     var groupShortcut: String = "",
     var city: String = ""
 )

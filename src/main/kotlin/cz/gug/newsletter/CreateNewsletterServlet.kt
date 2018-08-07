@@ -119,7 +119,7 @@ class CreateNewsletterServlet : HttpServlet() {
                 val event = eventsInCity[j]
                 result.append(event.groupShortcut.toUpperCase() + " - ")
                     .append(event.name)
-                result.append(" (${event.link})\n")
+                result.append(" (${event.url})\n")
                     .append("${event.date} ${event.time}")
                     .append("\n\n")
             }
@@ -141,7 +141,7 @@ class CreateNewsletterServlet : HttpServlet() {
             prefix + "event_name_and_place",
             String.format(
                 "<a href=\"%s\">%s</a><br>\n" + "<span class=\"place\">%s</span>",
-                event.link,
+                event.url,
                 event.name,
                 "${event.date} ${event.time}"
             )
