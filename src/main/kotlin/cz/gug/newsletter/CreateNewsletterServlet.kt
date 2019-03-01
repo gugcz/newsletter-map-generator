@@ -147,7 +147,7 @@ class CreateNewsletterServlet : HttpServlet() {
                 "<a href=\"%s\">%s</a><br>\n" + "<span class=\"place\">%s</span>",
                 event.url,
                 event.name,
-                "${event.date} ${event.time}"
+                getFormattedEventDate(event)
             )
         )
     }
