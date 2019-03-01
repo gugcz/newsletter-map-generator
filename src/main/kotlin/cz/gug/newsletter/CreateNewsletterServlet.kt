@@ -120,12 +120,16 @@ class CreateNewsletterServlet : HttpServlet() {
                 result.append(event.groupShortcut.toUpperCase() + " - ")
                     .append(event.name)
                 result.append(" (${event.url})\n")
-                    .append("${event.date} ${event.time}")
+                    .append(getFormattedEventDate(event))
                     .append("\n\n")
             }
             result.append("\n\n")
         }
         return result.toString()
+    }
+
+    private fun getFormattedEventDate(event: Event): String {
+        return event.multiDayDateAndTime ?: "${event.date} ${event.time}"
     }
 
     private fun addEvent(sections: JSONObject, prefix: String, event: Event) {
